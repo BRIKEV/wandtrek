@@ -18,7 +18,7 @@ export const meta: MetaFunction = () => [{
 
 export const links: LinksFunction = () => (
   [
-    { rel: 'stylesheet', href: 'https://unpkg.com/cirrus-ui' }
+    { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css' }
   ]
 );
 
