@@ -5,17 +5,11 @@ export const Nav = () => (
         <a className="navbar-item" href="#">
           <img className="image" src="https://bulma.io/images/bulma-logo.png" alt="" width="96px" />
         </a>
-        <a className="navbar-burger" role="button" aria-label="menu" aria-expanded="false">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
       </div>
       <div className="navbar-menu">
-        <div className="navbar-start"><a className="navbar-item" href="#">About</a><a className="navbar-item"
-            href="#">Company</a><a className="navbar-item" href="#">Services</a><a className="navbar-item"
-            href="#">Testimonials</a></div>
-        <div className="navbar-item">
+        <div className="navbar-end flex is-align-items-center">
+          <a className="navbar-item mr-2" href="#">Tours</a>
+          <a className="button is-primary" href="#">Login</a>
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ export const Tour = ({ title, summary, country, city }: Props) => (
   <div className="card-content">
     <div className="media">
       <div className="media-content">
-        <p className="title is-2">{title}</p>
+        <p className="title is-4">{title}</p>
       </div>
     </div>
 
