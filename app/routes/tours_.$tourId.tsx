@@ -2,7 +2,6 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Link, MetaFunction, Outlet, useLoaderData } from "@remix-run/react";
 import { getTour } from "~/data/tours/tours.server";
-import styles from "~/styles/tours.css";
 
 export const meta: MetaFunction = () => [
   {
@@ -17,6 +16,22 @@ export const meta: MetaFunction = () => [
     content: "Discover best tours",
   },
 ];
+
+export interface Context {
+  id: string;
+  title: string;
+  description: string;
+  country: string;
+  city: string;
+  image: string | null;
+  created_at: string;
+  stops: {
+    id: string;
+    title: string;
+    lat: number;
+    long: number;
+  }[];
+}
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const response = new Response();
@@ -43,7 +58,7 @@ export default function RouteComponent(){
         ))}
       </ul>
       <Link className="button is-primary" to={`/tours/${tour.id}/map`}>Load Map</Link>
-      <Outlet />
+      <Outlet context={tour} />
     </main>
   );
 }

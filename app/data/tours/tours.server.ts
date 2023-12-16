@@ -45,7 +45,9 @@ export const getTour = async (server: ServerProps, id: string) => {
       created_at,
       stops (
         id,
-        title
+        title,
+        lat,
+        long
       )
     `)
     .eq('id', id)
@@ -56,7 +58,7 @@ export const getTour = async (server: ServerProps, id: string) => {
   return data;
 };
 
-export const getTourMap = async (server: ServerProps, id: string) => {
+export const getTourCoordinates = async (server: ServerProps, id: string) => {
   const { data, error } = await supabaseServer(server).from('coordinates')
     .select(`
       lat,
