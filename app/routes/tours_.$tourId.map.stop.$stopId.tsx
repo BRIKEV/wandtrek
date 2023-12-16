@@ -15,6 +15,29 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
 export default function RouteComponent(){
   const data = useLoaderData<typeof loader>();
+  const speak = (message: string) => {
+    const msg = new SpeechSynthesisUtterance();
+    // Set voice (if available)
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      msg.voice = voices.find((voice) => voice.lang === 'en-US') || voices[0];
+    }
+
+    // Set volume (0 to 1)
+    msg.volume = 1;
+
+    // Set speech rate (0.1 to 10)
+    msg.rate = 1;
+
+    // Set language
+    msg.lang = 'en-US';
+
+    // Set pitch (0 to 2)
+    msg.pitch = 1;
+    msg.text = message;
+    window.speechSynthesis.speak(msg);
+  };
+
   return (
     <div className="modal is-active">
       <div className="modal-background"></div>
@@ -24,6 +47,9 @@ export default function RouteComponent(){
           <img src="https://bulma.io/images/placeholders/128x128.png" />
         </figure>
         <p>{data.description}</p>
+        <button type="button" className="button is-primary" onClick={() => speak(data.description)}>
+          Play
+        </button>
       </div>
       <Link className="modal-close is-large" aria-label="close" to=".." />
     </div>
