@@ -74,6 +74,7 @@ export interface Database {
           image: string | null
           lat: number
           long: number
+          order: number
           private: boolean
           title: string
           tour_id: string
@@ -85,6 +86,7 @@ export interface Database {
           image?: string | null
           lat: number
           long: number
+          order: number
           private: boolean
           title: string
           tour_id: string
@@ -96,6 +98,7 @@ export interface Database {
           image?: string | null
           lat?: number
           long?: number
+          order?: number
           private?: boolean
           title?: string
           tour_id?: string

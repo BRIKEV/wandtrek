@@ -45,12 +45,14 @@ export const getTour = async (server: ServerProps, id: string) => {
       created_at,
       stops (
         id,
+        order,
         title,
         lat,
         long
       )
     `)
     .eq('id', id)
+    .order('order', { referencedTable: 'stops', ascending: true })
     .single();
   if (error) {
     throw error;
