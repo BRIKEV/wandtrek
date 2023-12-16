@@ -71,7 +71,7 @@ export const getTourCoordinates = async (server: ServerProps, id: string) => {
   return data;
 };
 
-export const getStops = async (server: ServerProps, id: string) => {
+export const getStop = async (server: ServerProps, id: string) => {
   const { data, error } = await supabaseServer(server).from('stops')
     .select(`
       id,
