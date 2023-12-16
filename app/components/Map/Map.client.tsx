@@ -1,10 +1,15 @@
+import { Link } from "@remix-run/react";
 import type { LatLngTuple } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 
 interface Props {
   center: [number, number];
   height: string;
-  stops: [number, number][];
+  stops: {
+    id: string;
+    title: string;
+    position: [number, number]
+  }[];
   route: [number, number][];
 }
 
@@ -23,10 +28,11 @@ export function Map({ height, center, stops, route }: Props) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {stops.map((stop, index) => (
-          <Marker key={index} position={stop}>
+        {stops.map((stop) => (
+          <Marker key={stop.id} position={stop.position}>
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              {stop.title}
+              <Link className="button is-primary" to={`stop/${stop.id}`}>Check Stop</Link>
             </Popup>
           </Marker>
         ))}

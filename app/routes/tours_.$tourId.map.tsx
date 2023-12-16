@@ -1,7 +1,7 @@
 import type { LinksFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { MetaFunction, useLoaderData, useOutletContext } from "@remix-run/react";
+import { MetaFunction, Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
 import { ClientOnly } from "~/components/ClientOnly/ClientOnly";
 import { Map } from "~/components/Map/Map.client";
 import { getTourCoordinates } from "~/data/tours/tours.server";
@@ -50,15 +50,18 @@ export default function RouteComponent(){
     firstStop.lat,
     firstStop.long,
   ];
-  const stops: [number, number][] = context.stops.map(stop => ([
-    stop.lat, stop.long,
-  ]));
+  const stops = context.stops.map(stop => ({
+    id: stop.id,
+    title: stop.title,
+    position: [
+      stop.lat, stop.long,
+    ] as [number, number]
+  }));
   const route: [number, number][] = tourCoordinates.map((coordinate) => ([
     coordinate.lat, coordinate.long,
   ]));
   return (
-    <main className="container">
-      <h1>Hola</h1>
+    <div className="hero">
       <ClientOnly>
         {() => (
           <Map
@@ -69,6 +72,7 @@ export default function RouteComponent(){
           />
         )}
       </ClientOnly>
-    </main>
+      <Outlet />
+    </div>
   );
 }
