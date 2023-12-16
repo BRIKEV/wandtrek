@@ -32,3 +32,39 @@ export const getTours = async (server: ServerProps) => {
     })),
   };
 };
+
+export const getTour = async (server: ServerProps, id: string) => {
+  const { data, count, error } = await supabaseServer(server).from('tours')
+    .select(`
+      id,
+      title,
+      description,
+      country,
+      city,
+      image,
+      created_at,
+      stops (
+        id,
+        title
+      )
+    `)
+    .eq('id', id)
+    .single();
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
+export const getTourMap = async (server: ServerProps, id: string) => {
+  const { data, error } = await supabaseServer(server).from('coordinates')
+    .select(`
+      lat,
+      long
+    `)
+    .eq('tour_id', id);
+  if (error) {
+    throw error;
+  }
+  return data;
+};
