@@ -1,5 +1,6 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { Form } from "@remix-run/react";
+import { redirect } from "@remix-run/node";
+import { Form, Link } from "@remix-run/react";
 import { UserType, emailPasswordSignUp } from "~/data/auth/auth.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -12,7 +13,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     lastName: lastName.toString().trim(),
     type: type.toString().trim() as UserType,
   });
-  return null;
+  return redirect('/tours', { headers: response.headers });
 };
 
 export default function RouteComponent(){
@@ -57,6 +58,7 @@ export default function RouteComponent(){
           </div>
         </div>
         <button type="submit" className="button is-block is-primary is-fullwidth is-medium">Register</button>
+        <Link type="submit" className="button is-block is-secondary is-fullwidth is-medium" to="/login">Login</Link>
       </Form>
     </main>
   );

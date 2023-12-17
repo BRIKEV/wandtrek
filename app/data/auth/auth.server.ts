@@ -32,3 +32,22 @@ export const emailPasswordSignUp = async (server: ServerProps, payload: SignUpPa
   }
   return data;
 };
+
+export const emailPasswordLogin = async (server: ServerProps, payload: Pick<SignUpPayload, 'email' | 'password'>) => {
+  const { data, error } = await supabaseServer(server).auth.signInWithPassword({
+    email: payload.email,
+    password: payload.password,
+  })
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
+export const getSession = async (server: ServerProps) => {
+  const { error, data } = await supabaseServer(server).auth.getSession()
+  if (error) {
+    throw error;
+  }
+  return data;
+};
