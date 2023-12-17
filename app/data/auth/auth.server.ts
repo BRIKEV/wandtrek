@@ -5,10 +5,27 @@ interface ServerProps {
   response: Response;
 }
 
-export const emailPasswordSignUp = async (server: ServerProps, payload: { email: string, password: string }) => {
+export type UserType = 'GUIDE' | 'USER';
+
+interface SignUpPayload {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  type: UserType;
+}
+
+export const emailPasswordSignUp = async (server: ServerProps, payload: SignUpPayload) => {
   const { data, error } = await supabaseServer(server).auth.signUp({
     email: payload.email,
     password: payload.password,
+    options: {
+      data: {
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        type: 'GUIDE',
+      },
+    },
   })
   if (error) {
     throw error;

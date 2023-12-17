@@ -66,6 +66,41 @@ export interface Database {
           }
         ]
       }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          type: Database["public"]["Enums"]["profile_type"]
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          type?: Database["public"]["Enums"]["profile_type"]
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          type?: Database["public"]["Enums"]["profile_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       stops: {
         Row: {
           created_at: string
@@ -157,7 +192,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      profile_type: "USER" | "GUIDE"
     }
     CompositeTypes: {
       [_ in never]: never
