@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Form, Link, MetaFunction, Outlet, useLoaderData } from "@remix-run/react";
 import { getTour } from "~/data/tours/tours.server";
+import { validateAuth } from "~/utils/auth.server";
 
 export const meta: MetaFunction = () => [
   {
@@ -34,7 +35,13 @@ export interface Context {
 }
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  return null;
+  if (!params.tourId) {
+    return redirect('/404');
+  }
+  const response = new Response();
+  await validateAuth({ request, response });
+  const tour = await getTour({ request, response }, params.tourId);
+  return tour;
 };
 
 export default function RouteComponent(){
@@ -50,6 +57,7 @@ export default function RouteComponent(){
               type="text"
               placeholder="tour title"
               name="title"
+              defaultValue={tour.title}
             />
           </div>
         </div>
@@ -62,6 +70,7 @@ export default function RouteComponent(){
               type="text"
               placeholder="tour country"
               name="country"
+              defaultValue={tour.country}
             />
           </div>
         </div>
@@ -74,17 +83,19 @@ export default function RouteComponent(){
               type="text"
               placeholder="tour city"
               name="city"
+              defaultValue={tour.city}
             />
           </div>
         </div>
 
         <div className="field">
-          <label className="label">Email</label>
+          <label className="label">Description</label>
           <div className="control">
             <textarea
               className="textarea"
               placeholder="Tour description"
               name="description"
+              defaultValue={tour.description}
             ></textarea>
           </div>
         </div>

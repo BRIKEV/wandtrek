@@ -51,3 +51,11 @@ export const getSession = async (server: ServerProps) => {
   }
   return data;
 };
+
+export const getUser = async (server: ServerProps) => {
+  const { error, data } = await supabaseServer(server).auth.getSession()
+  if (error) {
+    throw error;
+  }
+  return data.session ? data.session.user : null;
+};

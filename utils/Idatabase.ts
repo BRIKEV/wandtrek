@@ -73,7 +73,7 @@ export interface Database {
           first_name: string
           id: string
           last_name: string
-          type: Database["public"]["Enums"]["profile_type"]
+          type: string
         }
         Insert: {
           created_at?: string
@@ -81,7 +81,7 @@ export interface Database {
           first_name: string
           id: string
           last_name: string
-          type?: Database["public"]["Enums"]["profile_type"]
+          type: string
         }
         Update: {
           created_at?: string
@@ -89,7 +89,7 @@ export interface Database {
           first_name?: string
           id?: string
           last_name?: string
-          type?: Database["public"]["Enums"]["profile_type"]
+          type?: string
         }
         Relationships: [
           {
@@ -157,6 +157,7 @@ export interface Database {
           distance: number | null
           id: string
           image: string | null
+          owner: string
           summary: string
           title: string
         }
@@ -168,6 +169,7 @@ export interface Database {
           distance?: number | null
           id?: string
           image?: string | null
+          owner: string
           summary: string
           title: string
         }
@@ -179,10 +181,19 @@ export interface Database {
           distance?: number | null
           id?: string
           image?: string | null
+          owner?: string
           summary?: string
           title?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tours_owner_fkey"
+            columns: ["owner"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
@@ -192,7 +203,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      profile_type: "USER" | "GUIDE"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
