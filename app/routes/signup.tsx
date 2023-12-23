@@ -1,6 +1,11 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
+import { Button } from "~/@ui/components/ui/button";
+import { Input } from "~/@ui/components/ui/input";
+import { Label } from "~/@ui/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "~/@ui/components/ui/radio-group";
+import Container from "~/components/Container/Container";
 import { UserType, emailPasswordSignUp } from "~/data/auth/auth.server";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -18,48 +23,48 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function RouteComponent(){
   return (
-    <main className="container">
-      <h1 className="title is-1">Signup</h1>
+    <Container>
+      <h1 className="font-bold text-xl mb-5">Create account</h1>
       <Form method="POST">
-        <div className="field">
-          <div className="control">
-            <input className="input is-medium" type="text" placeholder="First name" id="firstName" name="firstName" />
-          </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="firstName">First name</Label>
+          <Input type="text" placeholder="First name" id="firstName" name="firstName" />
+        </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="lastName">Last name</Label>
+          <Input type="text" placeholder="Last name" id="lastName" name="lastName" />
         </div>
 
-        <div className="field">
-          <div className="control">
-            <input className="input is-medium" type="text" placeholder="Last name" id="lastName" name="lastName" />
-          </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="email">Your email address</Label>
+          <Input type="email" placeholder="Email" id="email" name="email" />
         </div>
 
-        <div className="field">
-          <div className="control">
-            <input className="input is-medium" type="email" placeholder="Email" id="email" name="email" />
-          </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="email">Your password</Label>
+          <Input type="password" placeholder="Password" id="password" name="password" />
         </div>
 
-        <div className="field">
-          <div className="control">
-            <input className="input is-medium" type="password" placeholder="Password" id="password" name="password" />
-          </div>
+        <div className="mb-3">
+          <RadioGroup defaultValue="option-two">
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="USER" id="option-one" />
+              <Label htmlFor="option-one">Tourist</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="GUIDE" id="option-two" />
+              <Label htmlFor="option-two">Guide</Label>
+            </div>
+          </RadioGroup>
         </div>
 
-        <div className="field">
-          <div className="control">
-            <label className="radio">
-              <input type="radio" name="type" value="USER" />
-              User
-            </label>
-            <label className="radio">
-              <input type="radio" name="type" value="GUIDE" checked />
-              Guide
-            </label>
-          </div>
+        <div className="flex gap-x-2 items-start">
+          <Button type="submit">Register</Button>
+          <Button variant="secondary" asChild>
+            <Link type="submit" to="/signup">Login</Link>
+          </Button>
         </div>
-        <button type="submit" className="button is-block is-primary is-fullwidth is-medium">Register</button>
-        <Link type="submit" className="button is-block is-secondary is-fullwidth is-medium" to="/login">Login</Link>
       </Form>
-    </main>
+    </Container>
   );
 }

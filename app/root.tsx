@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { LinksFunction, MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
@@ -14,7 +15,7 @@ import { createBrowserClient } from "@supabase/auth-helpers-remix";
 import { Nav } from "./components/Nav/Nav";
 import { getSession } from "./data/auth/auth.server";
 import type { Database } from '../utils/Idatabase';
-import { useState } from "react";
+import styles from "./globals.css";
 
 export const meta: MetaFunction = () => [{
   charset: "utf-8",
@@ -25,7 +26,7 @@ export const meta: MetaFunction = () => [{
 
 export const links: LinksFunction = () => (
   [
-    { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css' }
+    { rel: "stylesheet", href: styles },
   ]
 );
 

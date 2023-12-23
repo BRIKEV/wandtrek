@@ -1,9 +1,9 @@
 import type { LinksFunction } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Link, MetaFunction, useLoaderData } from "@remix-run/react";
+import Container from "~/components/Container/Container";
 import { Tour } from "~/components/Tour/Tour";
 import { getTours } from "~/data/tours/tours.server";
-import styles from "~/styles/tours.css";
 
 export const meta: MetaFunction = () => [
   {
@@ -20,13 +20,6 @@ export const meta: MetaFunction = () => [
 ];
 
 
-export const links: LinksFunction = () => (
-  [
-    { rel: 'stylesheet', href: styles },
-  ]
-);
-
-
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const response = new Response();
   const tours = await getTours({ request, response });
@@ -36,9 +29,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function RouteComponent(){
   const data = useLoaderData<typeof loader>();
   return (
-    <main className="container">
-      <h1 className="title is-1">Enjoy our tours!</h1>
-      <div className="tour-list">
+    <Container>
+      <h1 className="font-bold text-xl mb-5">Enjoy our tours!</h1>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         {data.tours.map(tour => (
           <Link key={tour.id} to={`/tours/${tour.id}`}>
             <Tour
@@ -50,6 +43,6 @@ export default function RouteComponent(){
           </Link>
         ))}
       </div>
-    </main>
+    </Container>
   );
 }

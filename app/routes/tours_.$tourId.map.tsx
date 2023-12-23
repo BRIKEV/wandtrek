@@ -1,26 +1,11 @@
 import type { LinksFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { MetaFunction, Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
+import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
 import { ClientOnly } from "~/components/ClientOnly/ClientOnly";
 import { Map } from "~/components/Map/Map.client";
 import { getTourCoordinates } from "~/data/tours/tours.server";
 import { Context } from "./tours_.$tourId";
-
-export const meta: MetaFunction = () => [
-  {
-    title: 'Tours',
-  },
-  {
-    property: "og:title",
-    content: "Tours",
-  },
-  {
-    name: "description",
-    content: "Discover best tours",
-  },
-];
-
 
 export const links: LinksFunction = () => (
   [
@@ -61,7 +46,7 @@ export default function RouteComponent(){
     coordinate.lat, coordinate.long,
   ]));
   return (
-    <div className="hero">
+    <div>
       <ClientOnly>
         {() => (
           <Map

@@ -1,6 +1,9 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Link, MetaFunction, Outlet, useLoaderData } from "@remix-run/react";
+import { Button } from "~/@ui/components/ui/button";
+import { Card, CardHeader, CardTitle } from "~/@ui/components/ui/card";
+import Container from "~/components/Container/Container";
 import { getTour } from "~/data/tours/tours.server";
 
 export const meta: MetaFunction = () => [
@@ -45,20 +48,26 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 export default function RouteComponent(){
   const tour = useLoaderData<typeof loader>();
   return (
-    <main className="container">
-      <h1 className="title is-1">{tour.title}</h1>
+    <Container>
+      <h1 className="font-bold text-4xl mb-5">{tour.title}</h1>
       <figure className="image is-128x128">
         <img src="https://bulma.io/images/placeholders/128x128.png" />
       </figure>
       <p>{tour.description}</p>
       <p>{tour.country} - {tour.city}</p>
-      <ul>
+      <div>
         {tour.stops.map(stop => (
-          <li key={stop.id}>{stop.title}</li>
+          <Card className="mb-3" key={stop.id}>
+            <CardHeader>
+              <CardTitle>{stop.title}</CardTitle>
+            </CardHeader>
+          </Card>
         ))}
-      </ul>
-      <Link className="button is-primary" to={`/tours/${tour.id}/map`}>Load Map</Link>
+      </div>
+      <Button asChild>
+        <Link to={`/tours/${tour.id}/map`}>Start route</Link>
+      </Button>
       <Outlet context={tour} />
-    </main>
+    </Container>
   );
 }

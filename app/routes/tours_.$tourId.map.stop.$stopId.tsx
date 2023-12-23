@@ -1,8 +1,9 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { Button } from "~/@ui/components/ui/button";
+import { Card, CardContent } from "~/@ui/components/ui/card";
 import { getStop } from "~/data/tours/tours.server";
-
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const response = new Response();
@@ -39,19 +40,25 @@ export default function RouteComponent(){
   };
 
   return (
-    <div className="modal is-active">
-      <div className="modal-background"></div>
-      <div className="modal-content">
-        <h2 className="title is-2">{data.title}</h2>
-        <figure className="image is-128x128">
-          <img src="https://bulma.io/images/placeholders/128x128.png" />
-        </figure>
-        <p>{data.description}</p>
-        <button type="button" className="button is-primary" onClick={() => speak(data.description)}>
-          Play
-        </button>
-      </div>
-      <Link className="modal-close is-large" aria-label="close" to=".." />
+    <div className="fixed z-[1000] inset-0 flex items-center justify-center">
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+      <Card className="z-[1] w-screen max-w-4xl">
+        <CardContent>
+          <h2 className="font-bold text-lg">{data.title}</h2>
+          <figure>
+            <img src="https://bulma.io/images/placeholders/128x128.png" />
+          </figure>
+          <p>{data.description}</p>
+          <div className="flex gap-x-2 items-start">
+            <Button type="button" className="button is-primary" onClick={() => speak(data.description)}>
+              Play
+            </Button>
+            <Button variant="secondary" asChild>
+              <Link to="..">Back</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

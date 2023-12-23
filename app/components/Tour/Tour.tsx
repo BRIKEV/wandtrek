@@ -1,3 +1,5 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/@ui/components/ui/card";
+
 interface Props {
   title: string;
   summary: string;
@@ -6,23 +8,21 @@ interface Props {
 }
 
 export const Tour = ({ title, summary, country, city }: Props) => (
-  <div className="card">
-  <div className="card-image">
-    <figure className="image is-4by3">
-      <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image" />
-    </figure>
-  </div>
-  <div className="card-content">
-    <div className="media">
-      <div className="media-content">
-        <p className="title is-4">{title}</p>
-      </div>
+  <Card>
+    <div>
+      <figure>
+        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image" />
+      </figure>
     </div>
+    <CardHeader className="media">
+      <CardTitle className="title is-4">{title}</CardTitle>
+    </CardHeader>
 
-    <div className="content">
-      <p>{summary}</p>
-      <p>{country} - {city}</p>
-    </div>
-  </div>
-</div>
+    <CardContent>
+      <CardDescription>
+        <p>{summary}</p>
+        <p>{country} - {city}</p>
+      </CardDescription>
+    </CardContent>
+  </Card>
 );

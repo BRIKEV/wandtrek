@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { Button } from "~/@ui/components/ui/button";
 
 interface Props {
   hasSession: boolean;
@@ -7,24 +8,28 @@ interface Props {
 
 export const Nav = ({ hasSession, handleLogout }: Props) => {
   return (
-    <nav className="navbar py-4">
-      <div className="container is-fluid">
-        <div className="navbar-brand">
-          <Link className="navbar-item" to="/">
-            <img className="image" src="https://bulma.io/images/bulma-logo.png" alt="" width="96px" />
+    <div className="fixed p-[1em] top-0 inset-x-0 bg-white border-b-slate-300 border-b border-solid">
+      <div className="flex justify-between items-center">
+        <div>
+          <Link to="/">
+            <img src="https://bulma.io/images/bulma-logo.png" alt="" width="96px" />
           </Link>
         </div>
-        <div className="navbar-menu">
-          <div className="navbar-end flex is-align-items-center">
-            <Link className="navbar-item mr-2" to="/tours">Tours</Link>
-            {!hasSession ? (
-              <Link className="button is-primary" to="/login">Login</Link>
-            ) : (
-              <button className="button is-primary" onClick={handleLogout}>Logout</button>
-            )}
-          </div>
-        </div>
+        <nav>
+          <Button className="mr-2" asChild variant="ghost">
+            <Link to="/tours">Tours</Link>
+          </Button>
+          {!hasSession ? (
+            <Button asChild>
+              <Link to="/login">
+                Login
+              </Link>
+            </Button>
+          ) : (
+            <Button variant="secondary" onClick={handleLogout}>Logout</Button>
+          )}
+        </nav>
       </div>
-    </nav>
+    </div>
   );
 };

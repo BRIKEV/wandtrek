@@ -1,6 +1,8 @@
+import Container from "~/components/Container/Container";
+
 export default function Index() {
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <Container>
       <h1>Welcome to Remix</h1>
       <ul>
         <li>
@@ -31,6 +33,6 @@ export default function Index() {
           </a>
         </li>
       </ul>
-    </main>
+    </Container>
   );
 }
