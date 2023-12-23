@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { Form, Link, MetaFunction, Outlet, useLoaderData } from "@remix-run/react";
+import { Form, Link, MetaFunction, Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import { getTour } from "~/data/tours/tours.server";
 import { validateAuth } from "~/utils/auth.server";
 
@@ -46,6 +46,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
 export default function RouteComponent(){
   const tour = useLoaderData<typeof loader>();
+  const location = useLocation();
+  const editMap = !location.pathname.includes('/map');
   return (
     <main className="container">
       <Form>
@@ -114,6 +116,9 @@ export default function RouteComponent(){
           </label>
         </div>
       </Form>
+      {editMap && (
+        <Link to={`/tour-edit/${tour.id}/map`} className="button is-primary is-medium">Edit map</Link>
+      )}
 
       <Outlet context={tour} />
     </main>
