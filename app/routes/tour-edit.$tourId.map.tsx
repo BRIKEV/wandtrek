@@ -4,10 +4,10 @@ import { redirect } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
 import { ClientOnly } from "~/components/ClientOnly/ClientOnly";
-import { Map } from "~/components/Map/Map.client";
 import { getTourCoordinates } from "~/data/tours/tours.server";
 import { Context } from "./tour-edit.$tourId";
 import { EditMap } from "~/components/EditMap/EditMap.client";
+import { validateAuth } from "~/utils/auth.server";
 
 export const links: LinksFunction = () => (
   [
@@ -24,7 +24,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (!params.tourId) {
     return redirect('/404');
   }
+  await validateAuth({ request, response });
   const tourCoordinates = await getTourCoordinates({ request, response }, params.tourId);
+  console.log('????');
   return tourCoordinates;
 };
 
@@ -86,6 +88,7 @@ export default function RouteComponent(){
             center={center}
             stops={stops}
             route={route}
+            saveMapConfig={() => {}}
           />
         )}
       </ClientOnly>

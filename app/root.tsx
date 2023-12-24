@@ -27,6 +27,7 @@ export const meta: MetaFunction = () => [{
 export const links: LinksFunction = () => (
   [
     { rel: "stylesheet", href: styles },
+    { rel: "stylesheet", href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
   ]
 );
 
