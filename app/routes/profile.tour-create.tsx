@@ -4,6 +4,11 @@ import { Form, Link } from "@remix-run/react";
 import { redirect } from "@remix-run/node";
 import { createDraftTour } from "~/data/tours/tours.server";
 import { validateAuth } from "~/utils/auth.server";
+import Modal from "~/components/Modal/Modal";
+import { Button } from "~/@ui/components/ui/button";
+import { Label } from "~/@ui/components/ui/label";
+import { Input } from "~/@ui/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "~/@ui/components/ui/card";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const response = new Response();
@@ -24,25 +29,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function RouteComponent(){
   return (
-    <div className="modal is-active">
-      <div className="modal-background"></div>
-      <div className="modal-content">
-        <Form method="POST">
-          <div className="field">
-            <label className="label">Title</label>
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="tour title"
-                name="title"
-              />
+    <Modal>
+      <Card>
+        <CardHeader>
+          <CardTitle>Create a new route</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form method="POST">
+            <div className="mb-3">
+              <Label className="block mb-2" htmlFor="title">Tour title</Label>
+              <Input type="text" placeholder="Tour title" id="title" name="title" />
             </div>
-          </div>
-          <button type="submit" className="button is-block is-primary is-medium">Create draft</button>
-        </Form>
-      </div>
-      <Link className="modal-close is-large" aria-label="close" to=".." />
-    </div>
+            <div className="flex gap-x-2 items-start">
+              <Button type="submit">Create draft route</Button>
+              <Button variant="secondary" asChild>
+                <Link to="..">Back</Link>
+              </Button>
+            </div>
+          </Form>
+        </CardContent>
+      </Card>
+    </Modal>
   );
 }

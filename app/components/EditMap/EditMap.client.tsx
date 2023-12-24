@@ -2,6 +2,9 @@ import { useState } from "react";
 import { MapContainer } from "react-leaflet";
 import { Map } from './Map.client';
 import { LeafletMouseEvent } from "leaflet";
+import { RadioGroup, RadioGroupItem } from "~/@ui/components/ui/radio-group";
+import { Label } from "~/@ui/components/ui/label";
+import { Card, CardHeader, CardTitle } from "~/@ui/components/ui/card";
 
 interface Stop {
   id?: string;
@@ -33,37 +36,46 @@ export function EditMap({ height, center, stops, route }: Props) {
   };
 
   return (
-    <div style={{ height }}>
-      <div className="control">
-        <label className="radio">
-          <input type="radio" name="foobar" value="STOPS" />
-          Stops
-        </label>
-        <label className="radio">
-          <input type="radio" name="foobar" value="ROUTE" checked />
-          Route
-        </label>
+    <div>
+      <h1 className="font-bold text-xl mb-5">Modify your map</h1>
+      <div className="flex gap-x-2">
+        <div className="w-3/12">
+          <div className="mb-3">
+            <RadioGroup defaultValue="ROUTE">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="STOPS" id="STOPS" />
+                <Label htmlFor="STOPS">Modify stops</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="ROUTE" id="ROUTE" />
+                <Label htmlFor="ROUTE">Modify route</Label>
+              </div>
+            </RadioGroup>
+          </div>
+          <h3 className="font-bold text-lg mb-3">Stops</h3>
+          {markers.map(marker => (
+            <Card className="mb-3">
+              <CardHeader>
+                <h2>{marker.title}</h2>
+              </CardHeader>
+            </Card>
+          ))}
+        </div>
+        <div className="w-9/12">
+          <MapContainer
+            className="min-h-96"
+            center={center}
+            zoom={15}
+            scrollWheelZoom
+          >
+            <Map
+              route={polyline}
+              stops={markers}
+              clickMap={handleMap}
+            />
+          </MapContainer>
+        </div>
       </div>
-      {markers.map(marker => (
-        <>
-          <p>{marker.title}</p>
-          <p>{marker.position[0]}</p>
-        </>
-      ))}
-      <MapContainer
-        style={{
-          height: "100%",
-        }}
-        center={center}
-        zoom={15}
-        scrollWheelZoom
-      >
-        <Map
-          route={polyline}
-          stops={markers}
-          clickMap={handleMap}
-        />
-      </MapContainer>
     </div>
   );
 }

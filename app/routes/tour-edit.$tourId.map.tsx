@@ -78,7 +78,7 @@ export default function RouteComponent(){
     coordinate.lat, coordinate.long,
   ]));
   return (
-    <div className="hero">
+    <div className="my-5">
       <ClientOnly>
         {() => (
           <EditMap

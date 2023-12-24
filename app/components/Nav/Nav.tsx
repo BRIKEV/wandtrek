@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { Avatar, AvatarFallback, AvatarImage } from "~/@ui/components/ui/avatar";
 import { Button } from "~/@ui/components/ui/button";
 
 interface Props {
@@ -15,7 +16,7 @@ export const Nav = ({ hasSession, handleLogout }: Props) => {
             <img src="https://bulma.io/images/bulma-logo.png" alt="" width="96px" />
           </Link>
         </div>
-        <nav>
+        <nav className="flex justify-between items-center gap-x-2">
           <Button className="mr-2" asChild variant="ghost">
             <Link to="/tours">Tours</Link>
           </Button>
@@ -26,7 +27,15 @@ export const Nav = ({ hasSession, handleLogout }: Props) => {
               </Link>
             </Button>
           ) : (
-            <Button variant="secondary" onClick={handleLogout}>Logout</Button>
+            <>
+              <Button variant="secondary" onClick={handleLogout}>Logout</Button>
+              <Link to="/profile">
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </Link>
+            </>
           )}
         </nav>
       </div>

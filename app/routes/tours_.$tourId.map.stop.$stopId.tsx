@@ -3,6 +3,7 @@ import { redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Button } from "~/@ui/components/ui/button";
 import { Card, CardContent } from "~/@ui/components/ui/card";
+import Modal from "~/components/Modal/Modal";
 import { getStop } from "~/data/tours/tours.server";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -40,9 +41,8 @@ export default function RouteComponent(){
   };
 
   return (
-    <div className="fixed z-[1000] inset-0 flex items-center justify-center">
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-      <Card className="z-[1] w-screen max-w-4xl">
+    <Modal>
+      <Card>
         <CardContent>
           <h2 className="font-bold text-lg">{data.title}</h2>
           <figure>
@@ -59,6 +59,6 @@ export default function RouteComponent(){
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Modal>
   );
 }

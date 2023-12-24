@@ -1,6 +1,11 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Form, Link, MetaFunction, Outlet, useLoaderData, useLocation } from "@remix-run/react";
+import { Button } from "~/@ui/components/ui/button";
+import { Input } from "~/@ui/components/ui/input";
+import { Label } from "~/@ui/components/ui/label";
+import { Textarea } from "~/@ui/components/ui/textarea";
+import Container from "~/components/Container/Container";
 import { getTour } from "~/data/tours/tours.server";
 import { validateAuth } from "~/utils/auth.server";
 
@@ -49,78 +54,68 @@ export default function RouteComponent(){
   const location = useLocation();
   const editMap = !location.pathname.includes('/map');
   return (
-    <main className="container">
+    <Container>
       <Form>
-        <div className="field">
-          <label className="label">Title</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="tour title"
-              name="title"
-              defaultValue={tour.title}
-            />
-          </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="title">Tour title</Label>
+          <Input
+            type="text"
+            placeholder="Tour title"
+            id="title"
+            name="title"
+            defaultValue={tour.title}
+          />
         </div>
 
-        <div className="field">
-          <label className="label">Country</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="tour country"
-              name="country"
-              defaultValue={tour.country}
-            />
-          </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="country">Country</Label>
+          <Input
+            type="text"
+            placeholder="tour country"
+            name="country"
+            id="country"
+            defaultValue={tour.country}
+          />
         </div>
 
-        <div className="field">
-          <label className="label">City</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              placeholder="tour city"
-              name="city"
-              defaultValue={tour.city}
-            />
-          </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="city">City</Label>
+          <Input
+            type="text"
+            placeholder="tour city"
+            name="city"
+            id="city"
+            defaultValue={tour.city}
+          />
         </div>
 
-        <div className="field">
-          <label className="label">Description</label>
-          <div className="control">
-            <textarea
-              className="textarea"
-              placeholder="Tour description"
-              name="description"
-              defaultValue={tour.description}
-            ></textarea>
-          </div>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="description">Description</Label>
+          <Textarea
+            placeholder="tour description"
+            name="description"
+            id="description"
+            defaultValue={tour.description}
+          />
         </div>
 
-        <div className="file is-boxed">
-          <label className="file-label">
-            <input className="file-input" type="file" name="resume" />
-            <span className="file-cta">
-              <span className="file-icon">
-                <i className="fas fa-upload"></i>
-              </span>
-              <span className="file-label">
-                Choose a file…
-              </span>
-            </span>
-          </label>
+        <div className="mb-3">
+          <Label className="block mb-2" htmlFor="image">Picture</Label>
+          <Input
+            type="file"
+            name="image"
+            id="image"
+          />
         </div>
+        <Button type="submit">Edit route info</Button>
       </Form>
       {editMap && (
-        <Link to={`/tour-edit/${tour.id}/map`} className="button is-primary is-medium">Edit map</Link>
+        <Button asChild>
+          <Link to={`/tour-edit/${tour.id}/map`} className="button is-primary is-medium">Edit map</Link>
+        </Button>
       )}
 
       <Outlet context={tour} />
-    </main>
+    </Container>
   );
 }
