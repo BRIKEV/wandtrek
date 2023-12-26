@@ -1,3 +1,4 @@
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
@@ -26,7 +27,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   }
   await validateAuth({ request, response });
   const tourCoordinates = await getTourCoordinates({ request, response }, params.tourId);
-  console.log('????');
   return tourCoordinates;
 };
 
@@ -55,7 +55,6 @@ export function ErrorBoundary(){
     return <h1>Unknown Error</h1>;
   }
 }
-
 
 export default function RouteComponent(){
   const mapHeight = "400px";

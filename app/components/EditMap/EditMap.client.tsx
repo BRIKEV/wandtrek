@@ -4,8 +4,9 @@ import { Map } from './Map.client';
 import { LeafletMouseEvent } from "leaflet";
 import { RadioGroup, RadioGroupItem } from "~/@ui/components/ui/radio-group";
 import { Label } from "~/@ui/components/ui/label";
-import { Card, CardHeader, CardTitle } from "~/@ui/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/@ui/components/ui/card";
 import { Button } from "~/@ui/components/ui/button";
+import EditStopCard from "../EditStopCard/EditStopCard";
 
 interface Stop {
   id?: string;
@@ -46,9 +47,14 @@ export function EditMap({ center, stops, route, saveMapConfig }: Props) {
     setOption(value);
   };
 
-  const removeStop = (position: number) => {
-    const newMarkers = markers.filter((_, index) => index !== position);
-    setMarkers(newMarkers);
+  const removeBasedOnOption = (position: number) => {
+    if (option === MAP_OPTIONS.ROUTE) {
+      const newRoute = polyline.filter((_, index) => index !== position);
+      setPolyline(newRoute);
+    } else if (option === MAP_OPTIONS.STOPS) {
+      const newMarkers = markers.filter((_, index) => index !== position);
+      setMarkers(newMarkers);
+    }
   };
 
   return (
@@ -75,20 +81,36 @@ export function EditMap({ center, stops, route, saveMapConfig }: Props) {
               </div>
             </RadioGroup>
           </div>
-          <h3 className="font-bold text-lg mb-3">Stops</h3>
-          {markers.map((marker, index) => (
-            <Card className="mb-3">
-              <CardHeader>
-                <h2>{marker.title}</h2>
-                <Button variant="ghost" disabled={!marker.id} onClick={() => removeStop(index)}>
-                  <span translate="no" className="material-symbols-outlined">edit</span>
-                </Button>
-                <Button variant="ghost" onClick={() => removeStop(index)}>
-                  <span translate="no" className="material-symbols-outlined">delete</span>
-                </Button>
-              </CardHeader>
-            </Card>
-          ))}
+          {option === MAP_OPTIONS.ROUTE ? (
+            <>
+              <h3 className="font-bold text-lg mb-3">Route</h3>
+              {polyline.reverse().map((point, index) => (
+                <Card>
+                  <CardContent>
+                    <div className="my-3 flex gap-x-2 items-center justify-between">
+                      <h4 className="text-lg font-bold">Position {index + 1}</h4>
+                      <Button size="icon" variant="destructive" onClick={() => removeBasedOnOption(index)}>
+                        <span translate="no" className="material-symbols-outlined">delete</span>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </>
+          ) : (
+            <>
+              <h3 className="font-bold text-lg mb-3">Stops</h3>
+              {markers.map((marker, index) => (
+                <EditStopCard
+                  key={index}
+                  id={marker.id}
+                  title={marker.title}
+                  position={index}
+                  removeStop={removeBasedOnOption}
+                />
+              ))}
+            </>
+          )}
         </div>
         <div className="w-9/12">
           <MapContainer
