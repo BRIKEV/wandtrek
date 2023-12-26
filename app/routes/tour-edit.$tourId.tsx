@@ -1,3 +1,4 @@
+import type { ShouldRevalidateFunction } from "@remix-run/react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Form, Link, MetaFunction, Outlet, useLoaderData, useLocation } from "@remix-run/react";
@@ -38,6 +39,13 @@ export interface Context {
     long: number;
   }[];
 }
+
+
+export const shouldRevalidate: ShouldRevalidateFunction = ({ nextParams, nextUrl }) => {
+  if (nextUrl.pathname.includes('/new')) return false;
+  return true;
+};
+
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (!params.tourId) {
