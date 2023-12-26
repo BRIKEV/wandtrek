@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer } from "react-leaflet";
 import { Map } from './Map.client';
 import { LeafletMouseEvent } from "leaflet";
@@ -32,6 +32,10 @@ export function EditMap({ center, stops, route, saveMapConfig }: Props) {
   const [option, setOption] = useState<MAP_OPTIONS>(MAP_OPTIONS.STOPS);
   const [polyline, setPolyline] = useState<[number, number][]>(route);
 
+  useEffect(() => {
+    setMarkers(stops);
+  }, [stops]);
+
   const handleMap = (event: LeafletMouseEvent) => {
     if (option === MAP_OPTIONS.ROUTE) {
       setPolyline([...polyline, [event.latlng.lat, event.latlng.lng]]);
@@ -57,12 +61,27 @@ export function EditMap({ center, stops, route, saveMapConfig }: Props) {
     }
   };
 
+  const saveDisabled = markers.some(marker => !marker.id);
+
   return (
     <div>
       <hr className="mb-4" />
       <div className="flex justify-between items-center mb-4">
         <h1 className="font-bold text-xl mb-5">Modify your map</h1>
-        <Button type="button" onClick={() => saveMapConfig(markers, polyline)}>Save configuration</Button>
+        <div>
+          <Button
+            type="button"
+            onClick={() => saveMapConfig(markers, polyline)}
+            disabled={saveDisabled}
+          >
+            Save configuration
+          </Button>
+          {saveDisabled && (
+            <div className="text-red-500">
+              <span translate="no" className="material-symbols-outlined">warning</span> Please complete all stops information before saving.
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex gap-x-2">
         <div className="w-3/12">
@@ -84,7 +103,7 @@ export function EditMap({ center, stops, route, saveMapConfig }: Props) {
           {option === MAP_OPTIONS.ROUTE ? (
             <>
               <h3 className="font-bold text-lg mb-3">Route</h3>
-              {polyline.reverse().map((point, index) => (
+              {polyline.reverse().map((_, index) => (
                 <Card>
                   <CardContent>
                     <div className="my-3 flex gap-x-2 items-center justify-between">
@@ -105,7 +124,8 @@ export function EditMap({ center, stops, route, saveMapConfig }: Props) {
                   key={index}
                   id={marker.id}
                   title={marker.title}
-                  position={index}
+                  order={index}
+                  position={marker.position}
                   removeStop={removeBasedOnOption}
                 />
               ))}
@@ -114,7 +134,7 @@ export function EditMap({ center, stops, route, saveMapConfig }: Props) {
         </div>
         <div className="w-9/12">
           <MapContainer
-            className="min-h-[30rem]"
+            className="min-h-[45rem]"
             center={center}
             zoom={15}
             scrollWheelZoom
