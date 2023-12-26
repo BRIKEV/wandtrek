@@ -28,7 +28,6 @@ const mapTour = (tours: Tour[]) => (
 );
 
 export const createDraftTour = async (server: ServerProps, title: string, userId: string) => {
-  console.log('????');
   const { data, error } = await supabaseServer(server).from('tours')
     .insert({
       city: 'ADD VALUE',
@@ -133,6 +132,46 @@ export const getStop = async (server: ServerProps, id: string) => {
       image
     `)
     .eq('id', id)
+    .single();
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
+export const editStop = async (server: ServerProps, id: string, title: string, description: string) => {
+  const { data, error } = await supabaseServer(server).from('stops')
+    .update({
+      title,
+      description,
+    })
+    .eq('id', id)
+    .single();
+  if (error) {
+    throw error;
+  }
+  return data;
+};
+
+interface NewStop {
+  title: string;
+  description: string;
+  order: number;
+  lat: number;
+  long: number;
+}
+
+export const createStop = async (server: ServerProps, tourId: string, payload: NewStop) => {
+  const { data, error } = await supabaseServer(server).from('stops')
+    .insert({
+      tour_id: tourId,
+      title: payload.title,
+      description: payload.description,
+      order: payload.order,
+      lat: payload.lat,
+      long: payload.long,
+      private: false,
+    })
     .single();
   if (error) {
     throw error;
