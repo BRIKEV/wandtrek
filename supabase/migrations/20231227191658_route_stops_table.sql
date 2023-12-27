@@ -43,9 +43,9 @@ alter table "public"."stops" validate constraint "stops_tour_id_fkey";
 CREATE POLICY "Enable read access for all users" ON "public"."stops"
 AS PERMISSIVE FOR SELECT
 TO anon, authenticated
-USING (true)
+USING (true);
 
 CREATE POLICY "Enable read access for all users" ON "public"."coordinates"
 AS PERMISSIVE FOR SELECT
 TO anon, authenticated
-USING (true)
+USING (true);
