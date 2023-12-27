@@ -1,10 +1,11 @@
-import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { isRouteErrorResponse, useFetcher, useRouteError, useSubmit } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Outlet, useLoaderData, useOutletContext } from "@remix-run/react";
 import { ClientOnly } from "~/components/ClientOnly/ClientOnly";
-import { getTourCoordinates } from "~/data/tours/tours.server";
+import { createCoordinates, getTourCoordinates } from "~/data/tours/tours.server";
 import { Context } from "./tour-edit.$tourId";
 import { EditMap } from "~/components/EditMap/EditMap.client";
 import { validateAuth } from "~/utils/auth.server";
@@ -29,6 +30,20 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return tourCoordinates;
 };
 
+
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+  const response = new Response();
+  const tourId = params.tourId;
+  if (!tourId) {
+    return redirect('/404');
+  }
+  await validateAuth({ request, response });
+  const body = await request.json() as {
+    route: [number, number][];
+  };
+  await createCoordinates({ request, response }, tourId, body.route);
+  return null;
+};
 
 export function ErrorBoundary(){
   const error = useRouteError();
@@ -56,8 +71,8 @@ export function ErrorBoundary(){
 }
 
 export default function RouteComponent(){
-  const mapHeight = "400px";
   const tourCoordinates = useLoaderData<typeof loader>();
+  const submit = useSubmit()
   const context = useOutletContext<Context>();
   const firstStop = context.stops[0] || {
     lat: 51.505,
@@ -82,11 +97,15 @@ export default function RouteComponent(){
       <ClientOnly>
         {() => (
           <EditMap
-            height={mapHeight}
             center={center}
             stops={stops}
             route={route}
-            saveMapConfig={() => {}}
+            saveMapConfig={(_, route) => {
+              submit({ route }, {
+                method: 'POST',
+                encType: 'application/json',
+              });
+            }}
           />
         )}
       </ClientOnly>

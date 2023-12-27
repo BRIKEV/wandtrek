@@ -178,3 +178,20 @@ export const createStop = async (server: ServerProps, tourId: string, payload: N
   }
   return data;
 };
+
+type NewCoordinate = [number, number];
+
+export const createCoordinates = async (server: ServerProps, tourId: string, payload: NewCoordinate[]) => {
+  const { data, error } = await supabaseServer(server).from('coordinates')
+    .insert(
+      payload.map(item => ({
+        tour_id: tourId,
+        lat: item[0],
+        long: item[1],
+      }))
+    );
+  if (error) {
+    throw error;
+  }
+  return data;
+};

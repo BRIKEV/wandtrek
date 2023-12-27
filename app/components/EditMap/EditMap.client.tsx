@@ -16,7 +16,6 @@ interface Stop {
 
 interface Props {
   center: [number, number];
-  height: string;
   stops: Stop[];
   route: [number, number][];
   saveMapConfig: (stops:  Stop[], route: [number, number][]) => void;
