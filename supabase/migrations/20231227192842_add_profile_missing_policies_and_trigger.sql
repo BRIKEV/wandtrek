@@ -14,7 +14,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 AS $function$
 begin
   insert into public.profiles (id, first_name, last_name, email, type)
-  values (new.id, new.raw_user_meta_data ->> 'first_name', new.raw_user_meta_data ->> 'last_name', new.email, new.raw_user_meta_data ->> 'type');
+  values (new.id, new.raw_user_meta_data ->> 'firstName', new.raw_user_meta_data ->> 'lastName', new.email, new.raw_user_meta_data ->> 'type');
   return new;
 end;
 $function$
