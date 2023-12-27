@@ -27,7 +27,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export default function RouteComponent(){
-  const mapHeight = "400px";
+  const mapHeight = "600px";
   const tourCoordinates = useLoaderData<typeof loader>();
   const context = useOutletContext<Context>();
   const firstStop = context.stops[0];
