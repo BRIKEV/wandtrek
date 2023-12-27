@@ -46,14 +46,14 @@ export default function RouteComponent(){
         </div>
 
         <div className="mb-3">
-          <RadioGroup defaultValue="option-two">
+          <RadioGroup name="type" defaultValue="USER">
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="USER" id="option-one" />
-              <Label htmlFor="option-one">Tourist</Label>
+              <RadioGroupItem value="USER" id="USER" />
+              <Label htmlFor="USER">Tourist</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="GUIDE" id="option-two" />
-              <Label htmlFor="option-two">Guide</Label>
+              <RadioGroupItem value="GUIDE" id="GUIDE" />
+              <Label htmlFor="GUIDE">Guide</Label>
             </div>
           </RadioGroup>
         </div>
